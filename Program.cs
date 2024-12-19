@@ -1,4 +1,5 @@
 using CarBuilderCSHARP.Models;
+using CarBuilderCSHARP.Models.DTOs;
 
 // Paint Colors
 List<PaintColor> paintColors = new List<PaintColor>
@@ -60,6 +61,80 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+
+// GET Wheels
+app.MapGet("/wheels", () => 
+{
+    return wheels.Select(t => new WheelsDTO
+    {
+        Id = t.Id,
+        Price = t.Price,
+        Style = t.Style
+    });
+});
+
+
+
+// GET Technologies
+app.MapGet("/technologies", () => 
+{
+    return technologies.Select(t => new TechnologyDTO
+    {
+        Id = t.Id,
+        Price = t.Price,
+        Package = t.Package
+    });
+});
+
+
+
+// GET Interiors
+app.MapGet("/interiors", () => 
+{
+    return interiors.Select(t => new InteriorDTO
+    {
+        Id = t.Id,
+        Price = t.Price,
+        Material = t.Material
+    });
+});
+
+
+
+// GET Paints
+app.MapGet("/paintcolors", () => 
+{
+    return paintColors.Select(t => new PaintColorDTO
+    {
+        Id = t.Id,
+        Price = t.Price,
+        Color = t.Color
+    });
+});
+
+
+// GET Orders
+app.MapGet("/orders", () =>
+{
+    return orders.Select(o => new OrderDTO
+    {
+        Id = o.Id,
+        Timestamp = o.Timestamp,
+        WheelId = o.WheelId,
+        TechnologyId = o.TechnologyId,
+        PaintId = o.PaintId,
+        InteriorId = o.InteriorId,
+        // Optionally include full details of related data
+        Wheel = wheels.FirstOrDefault(w => w.Id == o.WheelId),
+        Technology = technologies.FirstOrDefault(t => t.Id == o.TechnologyId),
+        Paint = paintColors.FirstOrDefault(p => p.Id == o.PaintId),
+        Interior = interiors.FirstOrDefault(i => i.Id == o.InteriorId)
+    });
+});
+
+
+
 
 
 
