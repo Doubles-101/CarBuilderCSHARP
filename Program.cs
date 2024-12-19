@@ -135,6 +135,32 @@ app.MapGet("/orders", () =>
 
 
 
+// POST Orders
+// POST Create Order
+app.MapPost("/orders", (OrderDTO newOrder) =>
+{
+    // Generate a new ID by finding the max ID in the collection
+    int newId = orders.Any() ? orders.Max(o => o.Id) + 1 : 1;
+
+    // Create a new order with server-side timestamp
+    var order = new Order
+    {
+        Id = newId,
+        Timestamp = DateTime.Now, // Set the current timestamp
+        WheelId = newOrder.WheelId,
+        TechnologyId = newOrder.TechnologyId,
+        PaintId = newOrder.PaintId,
+        InteriorId = newOrder.InteriorId
+    };
+
+    // Add the order to the collection
+    orders.Add(order);
+
+    // Return the newly created order
+    return Results.Created($"/orders/{newId}", order);
+});
+
+
 
 
 
