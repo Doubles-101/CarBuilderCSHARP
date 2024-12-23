@@ -167,7 +167,7 @@ app.MapPost("/orders", (OrderDTO newOrder) =>
 });
 
 
-
+// This API communicates with car-builder client application!
 
 
 app.Run();
